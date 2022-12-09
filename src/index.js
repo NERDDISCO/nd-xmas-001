@@ -11,9 +11,10 @@ import { Ground } from "./atoms/Ground";
 import { Fir1 } from "./atoms/Fir1";
 import { Boxes } from "./molecules/Boxes";
 import { Snowflake } from "./atoms/Snowflake";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { BrightnessContrastShader } from "three/examples/jsm/shaders/BrightnessContrastShader.js";
 import { pseudoRandomBetween } from "./utils/pseudoeRandomBetween";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 const prng = new PRNG();
 
@@ -24,7 +25,6 @@ const size = 0.3;
 const spaceX = 5;
 const spaceY = 0;
 const spaceZ = 5;
-const envGradientColorStops = pseudoRandomBetween(prng.next(), 2, 20, true);
 const rotationX = pseudoRandomBetween(prng.next(), -24, 24);
 const rotationY = pseudoRandomBetween(prng.next(), -24, 24);
 const rotationZ = pseudoRandomBetween(prng.next(), -24, 24);
@@ -114,10 +114,15 @@ scene.add(elements);
 const renderPass = new RenderPass(scene, camera);
 effectComposer.addPass(renderPass);
 
-const bloom = new UnrealBloomPass();
-bloom.threshold = 0.21;
-bloom.strength = 1.2;
-bloom.radius = 0.55;
+const brightnessContrast = new ShaderPass(BrightnessContrastShader);
+// brightnessContrast.uniforms.brightness.value = -0.2;
+// brightnessContrast.uniforms.contrast = -1.0;
+// effectComposer.addPass(brightnessContrast);
+
+// const bloom = new UnrealBloomPass();
+// bloom.threshold = 0.21;
+// bloom.strength = 1.2;
+// bloom.radius = 0.55;
 // effectComposer.addPass(bloom);
 // const gammaCorrection = new ShaderPass(GammaCorrectionShader);
 
@@ -149,7 +154,8 @@ const tick = () => {
 
   // renderer.clearDepth();
   // camera.layers.set(0);
-  renderer.render(scene, camera);
+  // renderer.render(scene, camera);
+  effectComposer.render();
 
   window.requestAnimationFrame(tick);
 };

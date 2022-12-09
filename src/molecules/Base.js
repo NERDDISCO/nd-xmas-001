@@ -36,7 +36,7 @@ export class Base {
     /*
      * Light
      */
-    const ambientLight = new THREE.AmbientLight(0xaaaaaa, 0.75);
+    const ambientLight = new THREE.AmbientLight(0x000066, 0.75);
     this.scene.add(ambientLight);
 
     /**
