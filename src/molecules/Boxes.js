@@ -7,17 +7,9 @@ export class Boxes {
   constructor() {}
 
   async generate({
-    rotationX,
-    rotationY,
-    rotationZ,
     amount,
-    scene,
     size,
-    spaceX,
-    spaceY,
-    spaceZ,
     colors,
-    positions,
     rotations,
     prng,
     wrappings,
@@ -107,7 +99,7 @@ export class Boxes {
       );
 
       // Scale
-      const _scale = pseudoRandomBetween(prng.next(), 0.25, 1.25);
+      const _scale = pseudoRandomBetween(prng.next(), 0.25, 1.5);
 
       _box.scale.x = _scale;
       _box.scale.y = _scale;
