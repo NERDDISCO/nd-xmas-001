@@ -11,7 +11,6 @@ import { Ground } from "./atoms/Ground";
 import { Fir1 } from "./atoms/Fir1";
 import { Boxes } from "./molecules/Boxes";
 import { Snowflake } from "./atoms/Snowflake";
-import { pseudoRandomBetween } from "./utils/pseudoeRandomBetween";
 import { PostProcessing } from "./molecules/PostProcessing";
 const prng = new PRNG();
 
@@ -19,19 +18,10 @@ const rotationSpeed = 3;
 
 const amount = 25;
 const size = 0.3;
-const spaceX = 5;
-const spaceY = 0;
-const spaceZ = 5;
-const rotationX = pseudoRandomBetween(prng.next(), -24, 24);
-const rotationY = pseudoRandomBetween(prng.next(), -24, 24);
-const rotationZ = pseudoRandomBetween(prng.next(), -24, 24);
 
 const colors = prng.list({ size: amount, unique: true, precision: 4 });
-const positions = prng.list({ size: amount, unique: true, precision: 4 });
 const rotations = prng.list({ size: amount, unique: true, precision: 4 });
-const wireframes = prng.list({ size: amount, unique: true, precision: 4 });
 const wrappings = prng.list({ size: amount, unique: true });
-const wireframeThreshold = prng.next();
 const wrappingRanges = [{ dots: [0.0, 0.5] }, { stripes: [0.5, 1.0] }];
 
 const base = new Base({
@@ -44,12 +34,9 @@ const {
   renderer,
   scene,
   camera,
-  textureEquirec,
-  envMapLoader,
   textureLoader,
   gltfLoader,
   exrLoader,
-  sizes,
   effectComposer,
 } = base;
 
@@ -69,6 +56,7 @@ scene.environment = envMap;
 const elements = new THREE.Group();
 
 const gltf = await gltfLoader.loadAsync("models/nd-xmas-001.glb");
+gltf.scene.position.y = -2;
 
 const ground = new Ground();
 await ground.generate({ scene, gltf, textureLoader });
@@ -76,31 +64,18 @@ await ground.generate({ scene, gltf, textureLoader });
 const trees = new Fir1();
 await trees.generate({ scene, gltf, textureLoader, envMap });
 
-gltf.scene.position.y = -2;
 elements.add(gltf.scene);
 
 const snowflake = new Snowflake();
-await snowflake.generate({ scene, textureLoader, envMap });
+await snowflake.generate({ scene, prng });
 
 const boxes = new Boxes();
 const boxGroup = await boxes.generate({
   amount,
-  scene,
   size,
-  spaceX,
-  spaceY,
-  spaceZ,
-  rotationX,
-  rotationY,
-  rotationZ,
   colors,
-  positions,
   rotations,
   prng,
-  textureEquirec,
-  envMapLoader,
-  wireframes,
-  wireframeThreshold,
   wrappings,
   wrappingRanges,
 });
@@ -131,22 +106,11 @@ const tick = () => {
   previousTime = elapsedTime;
 
   elements.rotation.y += THREE.MathUtils.degToRad(delta * rotationSpeed);
-
   snowflake.update();
 
-  // renderer.autoClear = false;
-  // renderer.clear();
-
-  // camera.layers.set(1);
-  // effectComposer.render();
-
-  // renderer.clearDepth();
-  // camera.layers.set(0);
-  // renderer.render(scene, camera);
   effectComposer.render();
 
   window.requestAnimationFrame(tick);
 };
 
-// Start the animation
 tick();
