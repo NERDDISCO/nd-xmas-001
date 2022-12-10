@@ -11,14 +11,11 @@ import { Ground } from "./atoms/Ground";
 import { Fir1 } from "./atoms/Fir1";
 import { Boxes } from "./molecules/Boxes";
 import { Snowflake } from "./atoms/Snowflake";
-import { BrightnessContrastShader } from "three/examples/jsm/shaders/BrightnessContrastShader.js";
 import { pseudoRandomBetween } from "./utils/pseudoeRandomBetween";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { PostProcessing } from "./molecules/PostProcessing";
 const prng = new PRNG();
 
-const rotationSpeed = 5;
+const rotationSpeed = 3;
 
 const amount = 25;
 const size = 0.3;
@@ -111,23 +108,15 @@ const boxGroup = await boxes.generate({
 elements.add(boxGroup);
 scene.add(elements);
 
-const renderPass = new RenderPass(scene, camera);
-effectComposer.addPass(renderPass);
-
-const brightnessContrast = new ShaderPass(BrightnessContrastShader);
-// brightnessContrast.uniforms.brightness.value = -0.2;
-// brightnessContrast.uniforms.contrast = -1.0;
-// effectComposer.addPass(brightnessContrast);
-
-// const bloom = new UnrealBloomPass();
-// bloom.threshold = 0.21;
-// bloom.strength = 1.2;
-// bloom.radius = 0.55;
-// effectComposer.addPass(bloom);
-// const gammaCorrection = new ShaderPass(GammaCorrectionShader);
-
-// const composer = new EffectComposer( renderer, new THREE.WebGLRenderTarget( rtWidth, rtHeight, rtParameters ) );
-// composer.addPass( gammaCorrection );
+/**
+ * Post Processing
+ */
+const postProcessing = new PostProcessing();
+await postProcessing.generate({
+  scene,
+  camera,
+  effectComposer,
+});
 
 /**
  * Animate
@@ -141,7 +130,6 @@ const tick = () => {
   const delta = elapsedTime - previousTime;
   previousTime = elapsedTime;
 
-  // gltf.scene.rotation.y += THREE.MathUtils.degToRad(delta * rotationSpeed);
   elements.rotation.y += THREE.MathUtils.degToRad(delta * rotationSpeed);
 
   snowflake.update();
