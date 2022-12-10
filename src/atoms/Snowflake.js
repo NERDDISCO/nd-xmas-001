@@ -1,9 +1,11 @@
 import * as THREE from "three";
+import { SnowflakeTexture } from "../textures/SnowflakeTexture";
+import { pseudoRandomBetween } from "../utils/pseudoeRandomBetween";
 
 export class Snowflake {
   constructor() {}
 
-  async generate({ scene, textureLoader }) {
+  async generate({ scene, prng }) {
     let positions = [];
     let velocities = [];
 
@@ -12,6 +14,19 @@ export class Snowflake {
     this.minRange = this.maxRange / 2;
     this.minHeight = 5;
     const geometry = new THREE.BufferGeometry();
+
+    const snowflakeTexture = new SnowflakeTexture({
+      lineWidth: 10,
+      angle: pseudoRandomBetween(prng.next(), 25, 55),
+      maxLevel: 3,
+    });
+    const snowflakeCanvas = await snowflakeTexture.generate({ sides: 5 });
+    const texture = new THREE.CanvasTexture(
+      snowflakeCanvas,
+      THREE.sRGBEncoding,
+      THREE.RepeatWrapping,
+      THREE.RepeatWrapping
+    );
 
     for (let i = 0; i < this.amount; i++) {
       positions.push(
@@ -39,12 +54,12 @@ export class Snowflake {
 
     const material = new THREE.PointsMaterial({
       size: 0.25,
-      map: textureLoader.load("textures/snowflake.png"),
+      map: texture,
       blending: THREE.AdditiveBlending,
       depthTest: true,
       depthWrite: true,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.65,
     });
 
     this.particles = new THREE.Points(geometry, material);
@@ -52,7 +67,6 @@ export class Snowflake {
   }
 
   update() {
-    // console.log(this.particles);
     for (let i = 0; i < this.amount * 3; i += 3) {
       this.particles.geometry.attributes.position.array[i] -=
         this.particles.geometry.attributes.velocity.array[i];
