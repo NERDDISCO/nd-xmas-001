@@ -19,6 +19,7 @@ export class Ground {
     const texture_roughness = await textureLoader.load(
       "textures/snow_ground/snow_02_rough_1k.jpg"
     );
+    texture_roughness.encoding = THREE.sRGBEncoding;
     texture_roughness.wrapS = texture_roughness.wrapT = THREE.RepeatWrapping;
 
     const material = new MeshStandardMaterial({
