@@ -16,7 +16,7 @@ export class Snowflake {
     const geometry = new THREE.BufferGeometry();
 
     const snowflakeTexture = new SnowflakeTexture({
-      lineWidth: 10,
+      lineWidth: 5,
       angle: pseudoRandomBetween(prng.next(), 25, 55),
       maxLevel: 3,
     });
