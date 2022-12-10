@@ -5,7 +5,7 @@ import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 
 export class Base {
-  constructor({ camera, envGradientColorStops, prng }) {
+  constructor({ camera }) {
     window.canvasCollection = [];
 
     this.clock = new THREE.Clock();
