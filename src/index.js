@@ -14,8 +14,7 @@ import { Snowflake } from "./atoms/Snowflake";
 import { PostProcessing } from "./molecules/PostProcessing";
 const prng = new PRNG();
 
-const rotationSpeed = 3;
-
+const rotationSpeed = 2;
 const amount = 25;
 const size = 0.3;
 
@@ -25,8 +24,9 @@ const wrappings = prng.list({ size: amount, unique: true });
 const wrappingRanges = [{ dots: [0.0, 0.5] }, { stripes: [0.5, 1.0] }];
 
 const base = new Base({
-  camera: { x: 0, y: -1, z: 4 },
+  camera: { x: 0, y: 0, z: 4 },
   prng,
+  slug: "nd-xmas-001",
 });
 const {
   controls,

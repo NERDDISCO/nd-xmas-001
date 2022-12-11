@@ -3,26 +3,15 @@ import * as THREE from "three";
 export class Fir1 {
   constructor() {}
 
-  async generate({ scene, gltf, textureLoader, envMap }) {
-    // const texture_trunk = await textureLoader.load(
-    //   "textures/Fir1/SnowTrunk/Trunk_snow_DIFFUSE.png"
-    // );
-    // texture_trunk.encoding = THREE.sRGBEncoding;
-    // texture_trunk.wrapS = texture_trunk.wrapT = THREE.RepeatWrapping;
-
-    // const material_trunk = new THREE.MeshStandardMaterial({
-    //   map: texture_trunk,
-    //   envMap,
-    // });
-
+  async generate({ gltf, textureLoader, envMap }) {
     const texture_bark = await textureLoader.load(
-      "textures/Fir1/bark_DIFFUSE.png"
+      "textures/Fir1/bark_DIFFUSE_halfsize.jpg"
     );
     texture_bark.encoding = THREE.sRGBEncoding;
     texture_bark.wrapS = texture_bark.wrapT = THREE.RepeatWrapping;
 
     const texture_bark_normal = await textureLoader.load(
-      "textures/Fir1/bark_NORMAL.png"
+      "textures/Fir1/bark_NORMAL_halfsize.jpg"
     );
     texture_bark_normal.encoding = THREE.sRGBEncoding;
     texture_bark_normal.wrapS = texture_bark_normal.wrapT =

@@ -5,14 +5,16 @@ import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 
 export class Base {
-  constructor({ camera }) {
+  constructor({ camera, slug }) {
     window.canvasCollection = [];
 
     this.clock = new THREE.Clock();
 
-    this.textureLoader = new THREE.TextureLoader();
+    this.getLoadingManager();
 
-    this.gltfLoader = new GLTFLoader();
+    this.textureLoader = new THREE.TextureLoader(this.loadingManager);
+
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.exrLoader = new EXRLoader();
 
@@ -145,5 +147,47 @@ export class Base {
         { capture: true }
       );
     }
+
+    // Watermark
+    const watermark = document.createElement("div");
+    watermark.className = "watermark";
+    watermark.innerHTML = `<a href="https://nerddis.co/${slug}">${slug}</a>`;
+    document.body.appendChild(watermark);
+  }
+
+  getLoadingManager() {
+    this.loadingManager = new THREE.LoadingManager();
+    this.loadingCount = 0;
+    this.loadingMax = 2;
+
+    const container = document.createElement("div");
+    container.className = "loading";
+
+    const label = document.createElement("label");
+    label.innerHTML = "Loading...";
+    label.htmlFor = "progress";
+    container.appendChild(label);
+
+    const progress = document.createElement("progress");
+    progress.value = 0;
+    progress.max = 100;
+    progress.id = "progress";
+    container.appendChild(progress);
+
+    document.body.appendChild(container);
+
+    this.loadingManager.onProgress = (url, loaded, total) => {
+      progress.value = (loaded / total) * 100;
+    };
+
+    this.loadingManager.onLoad = () => {
+      this.loadingCount++;
+
+      // For what ever reason "onLoad" is called twice, so that'S
+      // why we have to use this magic trick
+      if (this.loadingCount == this.loadingMax) {
+        container.remove();
+      }
+    };
   }
 }
