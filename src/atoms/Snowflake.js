@@ -3,9 +3,11 @@ import { SnowflakeTexture } from "../textures/SnowflakeTexture";
 import { pseudoRandomBetween } from "../utils/pseudoeRandomBetween";
 
 export class Snowflake {
-  constructor() {}
+  constructor({ prng }) {
+    this.prng = prng;
+  }
 
-  async generate({ scene, prng }) {
+  async generate({ scene }) {
     let positions = [];
     let velocities = [];
 
@@ -17,7 +19,7 @@ export class Snowflake {
 
     const snowflakeTexture = new SnowflakeTexture({
       lineWidth: 5,
-      angle: pseudoRandomBetween(prng.next(), 25, 55),
+      angle: pseudoRandomBetween(this.prng.next(), 25, 55),
       maxLevel: 3,
     });
     const snowflakeCanvas = await snowflakeTexture.generate({ sides: 5 });
@@ -30,15 +32,15 @@ export class Snowflake {
 
     for (let i = 0; i < this.amount; i++) {
       positions.push(
-        Math.floor(Math.random() * this.maxRange - this.minRange), // x
-        Math.floor(Math.random() * this.minRange + this.minHeight), // y
-        Math.floor(Math.random() * this.maxRange - this.minRange) // z
+        Math.floor(this.prng.next() * this.maxRange - this.minRange), // x
+        Math.floor(this.prng.next() * this.minRange + this.minHeight), // y
+        Math.floor(this.prng.next() * this.maxRange - this.minRange) // z
       );
 
       velocities.push(
-        Math.floor(Math.random() * 6 - 3) * 0.015, // x -.3 to .3
-        Math.floor(Math.random() * 5 + 0.12) * 0.015, // y 0.02 to 0.92
-        Math.floor(Math.random() * 6 - 3) * 0.035 // z -.3 to .3
+        Math.floor(this.prng.next() * 6 - 3) * 0.015, // x -.3 to .3
+        Math.floor(this.prng.next() * 5 + 0.12) * 0.015, // y 0.02 to 0.92
+        Math.floor(this.prng.next() * 6 - 3) * 0.035 // z -.3 to .3
       );
     }
 
@@ -80,15 +82,15 @@ export class Snowflake {
       // Check if below ground
       if (this.particles.geometry.attributes.position.array[i + 1] < -4) {
         this.particles.geometry.attributes.position.array[i] = Math.floor(
-          Math.random() * this.maxRange - this.minRange
+          this.prng.next() * this.maxRange - this.minRange
         );
 
         this.particles.geometry.attributes.position.array[i + 1] = Math.floor(
-          Math.random() * this.minRange + this.minHeight
+          this.prng.next() * this.minRange + this.minHeight
         );
 
         this.particles.geometry.attributes.position.array[i + 2] = Math.floor(
-          Math.random() * this.maxRange - this.minRange
+          this.prng.next() * this.maxRange - this.minRange
         );
       }
     }

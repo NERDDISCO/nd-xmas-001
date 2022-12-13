@@ -12,6 +12,7 @@ import { Fir1 } from "./atoms/Fir1";
 import { Boxes } from "./molecules/Boxes";
 import { Snowflake } from "./atoms/Snowflake";
 import { PostProcessing } from "./molecules/PostProcessing";
+import { pseudoRandomBetween } from "./utils/pseudoeRandomBetween";
 const prng = new PRNG();
 
 const rotationSpeed = 2;
@@ -66,8 +67,8 @@ await trees.generate({ scene, gltf, textureLoader, envMap });
 
 elements.add(gltf.scene);
 
-const snowflake = new Snowflake();
-await snowflake.generate({ scene, prng });
+const snowflake = new Snowflake({ prng });
+await snowflake.generate({ scene });
 
 const boxes = new Boxes();
 const boxGroup = await boxes.generate({
@@ -82,6 +83,11 @@ const boxGroup = await boxes.generate({
 
 elements.add(boxGroup);
 scene.add(elements);
+
+// Random rotation for everything
+elements.rotation.y = THREE.MathUtils.degToRad(
+  pseudoRandomBetween(prng.next(), 0, 360)
+);
 
 /**
  * Post Processing
