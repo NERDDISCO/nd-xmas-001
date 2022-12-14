@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 
@@ -15,6 +16,12 @@ export class Base {
     this.textureLoader = new THREE.TextureLoader(this.loadingManager);
 
     this.gltfLoader = new GLTFLoader(this.loadingManager);
+
+    this.dracoLoader = new DRACOLoader(this.loadingManager);
+    this.dracoLoader.setDecoderPath("/draco/");
+    this.dracoLoader.preload();
+
+    this.gltfLoader.setDRACOLoader(this.dracoLoader);
 
     this.exrLoader = new EXRLoader();
 

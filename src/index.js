@@ -16,7 +16,7 @@ import { pseudoRandomBetween } from "./utils/pseudoeRandomBetween";
 const prng = new PRNG();
 
 const rotationSpeed = 2;
-const amount = 25;
+const amount = pseudoRandomBetween(prng.next(), 10, 50, true);
 const size = 0.3;
 
 const colors = prng.list({ size: amount, unique: true, precision: 4 });
@@ -56,7 +56,7 @@ scene.environment = envMap;
  */
 const elements = new THREE.Group();
 
-const gltf = await gltfLoader.loadAsync("models/nd-xmas-001.glb");
+const gltf = await gltfLoader.loadAsync("models/nd-xmas-001_compressed.glb");
 gltf.scene.position.y = -2;
 
 const ground = new Ground();
