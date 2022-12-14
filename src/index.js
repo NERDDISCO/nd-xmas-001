@@ -83,7 +83,7 @@ scene.add(elements);
  * EnvMap
  */
 const envMap = await exrLoader.loadAsync(
-  "textures/snowy_forest_path_01_1k.exr"
+  "textures/snowy_forest_path_01_1k_20.exr"
 );
 envMap.mapping = THREE.EquirectangularReflectionMapping;
 envMap.encoding = THREE.sRGBEncoding;
