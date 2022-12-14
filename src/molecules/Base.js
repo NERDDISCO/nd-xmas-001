@@ -18,7 +18,7 @@ export class Base {
     this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.dracoLoader = new DRACOLoader(this.loadingManager);
-    this.dracoLoader.setDecoderPath("/draco/");
+    this.dracoLoader.setDecoderPath("draco/");
     this.dracoLoader.preload();
 
     this.gltfLoader.setDRACOLoader(this.dracoLoader);
