@@ -15,12 +15,11 @@ export class Base {
 
     this.textureLoader = new THREE.TextureLoader(this.loadingManager);
 
-    this.gltfLoader = new GLTFLoader(this.loadingManager);
-
     this.dracoLoader = new DRACOLoader(this.loadingManager);
     this.dracoLoader.setDecoderPath("draco/");
     this.dracoLoader.preload();
 
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
     this.gltfLoader.setDRACOLoader(this.dracoLoader);
 
     this.exrLoader = new EXRLoader();

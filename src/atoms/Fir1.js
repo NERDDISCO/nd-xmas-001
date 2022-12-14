@@ -3,7 +3,7 @@ import * as THREE from "three";
 export class Fir1 {
   constructor() {}
 
-  async generate({ gltf, textureLoader, envMap }) {
+  async generate({ gltf, textureLoader }) {
     const texture_bark = await textureLoader.load(
       "textures/Fir1/bark_DIFFUSE_halfsize.jpg"
     );
@@ -20,7 +20,6 @@ export class Fir1 {
     const material_bark = new THREE.MeshStandardMaterial({
       map: texture_bark,
       normalMap: texture_bark_normal,
-      envMap,
     });
 
     const texture_needless = await textureLoader.load(
@@ -45,7 +44,6 @@ export class Fir1 {
       transparent: true,
       depthWrite: true,
       depthTest: true,
-      envMap,
     });
 
     gltf.scene.traverse((child) => {

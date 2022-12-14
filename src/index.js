@@ -42,16 +42,6 @@ const {
 } = base;
 
 /**
- * EnvMap
- */
-const envMap = await exrLoader.loadAsync(
-  "textures/snowy_forest_path_01_1k.exr"
-);
-envMap.mapping = THREE.EquirectangularReflectionMapping;
-envMap.encoding = THREE.sRGBEncoding;
-scene.environment = envMap;
-
-/**
  * Scene
  */
 const elements = new THREE.Group();
@@ -63,7 +53,7 @@ const ground = new Ground();
 await ground.generate({ scene, gltf, textureLoader });
 
 const trees = new Fir1();
-await trees.generate({ scene, gltf, textureLoader, envMap });
+await trees.generate({ scene, gltf, textureLoader });
 
 elements.add(gltf.scene);
 
@@ -82,12 +72,22 @@ const boxGroup = await boxes.generate({
 });
 
 elements.add(boxGroup);
-scene.add(elements);
-
 // Random rotation for everything
 elements.rotation.y = THREE.MathUtils.degToRad(
   pseudoRandomBetween(prng.next(), 0, 360)
 );
+
+scene.add(elements);
+
+/**
+ * EnvMap
+ */
+const envMap = await exrLoader.loadAsync(
+  "textures/snowy_forest_path_01_1k.exr"
+);
+envMap.mapping = THREE.EquirectangularReflectionMapping;
+envMap.encoding = THREE.sRGBEncoding;
+scene.environment = envMap;
 
 /**
  * Post Processing
