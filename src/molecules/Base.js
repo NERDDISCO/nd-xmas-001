@@ -22,7 +22,7 @@ export class Base {
     this.gltfLoader = new GLTFLoader(this.loadingManager);
     this.gltfLoader.setDRACOLoader(this.dracoLoader);
 
-    this.exrLoader = new EXRLoader();
+    this.exrLoader = new EXRLoader(this.loadingManager);
 
     /**
      * Base
