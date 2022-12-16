@@ -11,6 +11,9 @@ export class Base {
 
     this.clock = new THREE.Clock();
 
+    this.delta = 0;
+    this.deltaThreshold = 1000 / 60 / 1000;
+
     this.getLoadingManager();
 
     this.textureLoader = new THREE.TextureLoader(this.loadingManager);
@@ -195,5 +198,15 @@ export class Base {
         container.remove();
       }
     };
+  }
+
+  shouldUpdate({ delta }) {
+    if (this.delta >= this.deltaThreshold) {
+      this.delta = 0
+      return true
+    } else {
+      this.delta += delta
+      return false
+    }
   }
 }

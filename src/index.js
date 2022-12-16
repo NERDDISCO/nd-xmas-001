@@ -112,7 +112,10 @@ const tick = () => {
   previousTime = elapsedTime;
 
   elements.rotation.y += THREE.MathUtils.degToRad(delta * rotationSpeed);
-  snowflake.update();
+  
+  if (base.shouldUpdate({ delta })) {
+    snowflake.update();
+  }
 
   effectComposer.render();
 
